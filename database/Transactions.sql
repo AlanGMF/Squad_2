@@ -10,9 +10,10 @@ CREATE TABLE IF NOT EXISTS public.transactions
     tax numeric,
     total_amount numeric,
     id_store_type integer,
+    id_product_category character(5) NOT NULL
     CONSTRAINT transactions_pkey PRIMARY KEY (id_transaction),
-    CONSTRAINT category_fk FOREIGN KEY (id_category, id_subcategory)
-        REFERENCES public.product_categories (id_category, id_subcategory) MATCH SIMPLE
+    CONSTRAINT category_fk FOREIGN KEY (id_product_category)
+        REFERENCES public.product_categories (id_product_category) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
     CONSTRAINT customer_fk FOREIGN KEY (id_customer)
