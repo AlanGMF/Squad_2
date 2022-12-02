@@ -1,9 +1,14 @@
-CREATE TABLE IF NOT EXISTS public.product_categories
-(
-    "ID_Product_Category" character(5) NOT NULL,
-    "ID_Category" integer NOT NULL,
-    "Category" character(20) COLLATE pg_catalog."default",
-    "ID_Subcategory" integer NOT NULL,
-    "Subcategory" character(20) COLLATE pg_catalog."default",
-    CONSTRAINT product_categories_pkey PRIMARY KEY (ID_Product_Category)
-)
+-- public.product_categories definition
+
+-- Drop table
+
+-- DROP TABLE public.product_categories;
+
+CREATE TABLE IF NOT EXISTS public.product_categories (
+	id_product_category varchar NOT NULL,
+	id_category int4 NOT NULL,
+	category varchar NULL,
+	id_subcategory int4 NOT NULL,
+	subcategory varchar NULL,
+	CONSTRAINT product_categories_pkey PRIMARY KEY (id_product_category)
+);
