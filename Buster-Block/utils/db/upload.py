@@ -14,8 +14,7 @@ def root_file() -> dict:
 
     # Current work path
     root = str(os.path.abspath(os.getcwd()))
-    root = root + "/utils/etl/dataset"
-
+    root = root + "/Buster-Block/utils/etl/processed_data"
     # Route files
     files = os.listdir(root)
 

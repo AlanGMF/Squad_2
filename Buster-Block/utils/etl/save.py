@@ -14,7 +14,7 @@ def save_csv(name: str, df: pd.DataFrame) -> None:
     :rtype: None
     """
     # File path and folder to save
-    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'processed_data')
     # Full path
     file = root + '/' + name
     # Saved from df

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Integer, Date, Numeric, ForeignKey
 from sqlalchemy.orm import relationship
-from connect import Base
+from db.connect import Base
 
 
 class Cities(Base):
@@ -99,13 +99,14 @@ class Transactions(Base):
     """Transaction Table Model"""
     __tablename__ = 'transactions'
 
-    def __init__(self, transaction_number: int, id_customer: int,
-                 transaction_date: Date, id_subcategory: int,
+    def __init__(self, transaction_number: int, transaction_type: str,
+                 id_customer: int, transaction_date: Date, id_subcategory: int,
                  id_category: int, quantity: float, rate: float,
                  tax: float, total_amount: float, id_store_type: int,
                  id_store: int, id_product_category: str) -> None:
 
         self.transaction_number = transaction_number
+        self.transaction_type = transaction_type
         self.id_customer = id_customer
         self.transaction_date = transaction_date
         self.id_subcategory = id_subcategory
@@ -120,6 +121,7 @@ class Transactions(Base):
 
     id_transaction = Column(Integer, primary_key=True, autoincrement=True)
     transaction_number = Column(Numeric, nullable=False)
+    transaction_type = Column(String)
 
     id_customer = Column(Integer,
                          ForeignKey(

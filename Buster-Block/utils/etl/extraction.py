@@ -6,10 +6,14 @@ def root_file()-> dict:
     :return: root_file(Dictionary filename - path)
     :rtype: dict
     """
+
     # Current work path
-    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'file')
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        'raw_data')
+
     # Route files
     files = os.listdir(root)
+
     # Dictionary filename - path
     root_file = {}
     for f in files:
