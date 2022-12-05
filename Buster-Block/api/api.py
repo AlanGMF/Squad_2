@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG,
                     )
 
 app = FastAPI()
-DIR = os.path.dirname(os.path.normpath(__file__)).rstrip('/api')
+DIR = os.path.dirname(os.path.normpath(__file__)).rstrip('/api') +"/utils/etl/process_data"
 
 
 @app.post("/getdata")
@@ -20,8 +20,8 @@ def upload():
     """
 
     # files paths
-    data_path1 = f"{DIR}/data/data/Customer.csv, {DIR}/data/data/dataframe_file.csv,"
-    data_path2 = f"{DIR}/data/data/large_dff.csv, {DIR}/data/data/bici.csv"
+    data_path1 = f"{DIR}/cities.csv, {DIR}/customer.csv, {DIR}/transactions.csv,"
+    data_path2 = f"{DIR}/prod_cat_info.csv, {DIR}/store_types.csv"
     data_path = data_path1 + data_path2
 
     try:

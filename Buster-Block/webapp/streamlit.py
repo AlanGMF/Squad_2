@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-# import requests
+import requests
 
 
 def change_null_values(action: str, df: pd.DataFrame):
@@ -159,23 +159,25 @@ def show_settings_df(dataframe, df_name):
 
 
 def get_company_data():
-    pass
-    # FIXME
-    # res = requests.post(url = "http://0.0.0.0:8000/getdata")
-    # st.write(res.text.split(","))
-    # data1, data2, data3, data4 = res.text.split(",")
+    
+    res = requests.post(url="http://0.0.0.0:8000/getdata")
+    st.write(res.text.split(","))
+    data1, data2, data3, data4, data5 = res.text.split(",")
 
-    # dataframe1 = pd.read_csv(data1.replace('"', '').strip())
-    # st.dataframe(dataframe1)
+    dataframe1 = pd.read_csv(data1.replace('"', '').strip())
+    st.dataframe(dataframe1)
 
-    # dataframe2 = pd.read_csv(data2.replace('"', '').strip())
-    # st.dataframe(dataframe2)
+    dataframe2 = pd.read_csv(data2.replace('"', '').strip())
+    st.dataframe(dataframe2)
 
-    # dataframe3 = pd.read_csv(data3.replace('"', '').strip())
-    # st.dataframe(dataframe3)
+    dataframe3 = pd.read_csv(data3.replace('"', '').strip())
+    st.dataframe(dataframe3)
 
-    # dataframe4 = pd.read_csv(data4.replace('"', '').strip())
-    # st.dataframe(dataframe4)
+    dataframe4 = pd.read_csv(data4.replace('"', '').strip())
+    st.dataframe(dataframe4)
+
+    dataframe5 = pd.read_csv(data5.replace('"', '').strip())
+    st.dataframe(dataframe5)
 
 
 st.markdown("# Buster-block ")
