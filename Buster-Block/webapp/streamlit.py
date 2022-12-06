@@ -183,7 +183,7 @@ def get_company_data():
 st.markdown("# Buster-block ")
 st.markdown("####  Download company files :open_file_folder:")
 
-if "Show_company_data" not in st.session_state():
+if "Show_company_data" not in st.session_state:
     st.session_state["Show_company_data"] = False
 
 download_company_files = st.button(
