@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import db.connect as db
 import db.models as models
+import log_control
 
 
 def root_file() -> dict:
@@ -12,24 +13,47 @@ def root_file() -> dict:
     :rtype: dict
     """
 
-    # Current work path
-    root = str(os.path.abspath(os.getcwd()))
-    root = root + "/Buster-Block/utils/etl/processed_data"
-    # Route files
-    files = os.listdir(root)
+    log_control.loggerDB.info('Starting the directory extraction process')
+    try:
+        # Current work path
+        root = str(os.path.abspath(os.getcwd()))
+        root = root + "/Buster-Block/utils/etl/processed_data"
+        log_control.loggerDB.info('Path obtained successfully!')
 
-    # Dictionary filename - path
-    root_file = {}
-    for f in files:
-        root_file[f] = root + '/' + f
+    except Exception as e:
+        log_control.loggerDB.error(f'Error getting address, info: {e}')
 
-    return root_file
+    try:
+        # Route files
+        files = os.listdir(root)
+        log_control.loggerDB.info(f'Existing file path obtained successfully!')
+
+    except Exception as e:
+        log_control.loggerDB.error(f'Error getting file path present in folder, info: {e}')
+
+    try:
+        # Dictionary filename - path
+        root_file = {}
+        for f in files:
+            root_file[f] = root + '/' + f
+
+        log_control.loggerDB.info(f'Successful filename-path creation process!')
+        return root_file
+
+    except Exception as e:
+        log_control.loggerDB.error(f'Error in the filename-path creation process, info: {e}')
 
 
 def create_db() -> None:
     """Creation of the database"""
-    db.Base.metadata.create_all(db.engine)
 
+    log_control.loggerDB.info('Beginning of the creation of the tables')
+    try:
+        db.Base.metadata.create_all(db.engine)
+        log_control.loggerDB.info('Tables created successfully!')
+
+    except Exception as e:
+        log_control.loggerDB.error(f'Failed to create tables successfully created, info: {e}')
 
 def upload_csv(file: str, table: str) -> None:
     """
@@ -41,9 +65,14 @@ def upload_csv(file: str, table: str) -> None:
     :type table: str
     """
 
-    df = pd.read_csv(file)
-    df.to_sql(table, db.engine, if_exists='append', index=False)
+    log_control.loggerDB.info(f'Started the process of uploading data to the table: {table}')
+    try:
+        df = pd.read_csv(file)
+        df.to_sql(table, db.engine, if_exists='append', index=False)
+        log_control.loggerDB.info('Upload successfully!')
 
+    except Exception as e:
+        log_control.loggerDB.error(f'Error in the process of uploading data to the table {table}, info: {e}')
 
 def upload_city(dict_files) -> None:
     """
@@ -126,12 +155,18 @@ def upload_transactions(dict_files) -> None:
 def drop_all_tables() -> None:
     """Drops all the tables related to the dataframe"""
 
-    models.Transactions.__table__.drop(db.engine)
-    models.Store.__table__.drop(db.engine)
-    models.StoreTypes.__table__.drop(db.engine)
-    models.ProductCategories.__table__.drop(db.engine)
-    models.Customers.__table__.drop(db.engine)
-    models.Cities.__table__.drop(db.engine)
+    log_control.loggerDB.info('Dropping existing tables for data aggregation')
+    try:
+        models.Transactions.__table__.drop(db.engine)
+        models.Store.__table__.drop(db.engine)
+        models.StoreTypes.__table__.drop(db.engine)
+        models.ProductCategories.__table__.drop(db.engine)
+        models.Customers.__table__.drop(db.engine)
+        models.Cities.__table__.drop(db.engine)
+        log_control.loggerDB.info('successful drop!')
+
+    except Exception as e:
+        log_control.loggerDB.error(f'Error in the drop of existing tables for data aggregation, info: {e}')
 
 
 def read_upload_csv(dict_files: dict) -> None:
@@ -142,11 +177,17 @@ def read_upload_csv(dict_files: dict) -> None:
     :type dict_files: dict
     """
 
-    drop_all_tables()
-    create_db()
-    upload_city(dict_files)
-    upload_customers(dict_files)
-    upload_product_categories(dict_files)
-    upload_store_types(dict_files)
-    upload_stores(dict_files)
-    upload_transactions(dict_files)
+    log_control.loggerDB.info('Start uploading all files')
+    try:
+        drop_all_tables()
+        create_db()
+        upload_city(dict_files)
+        upload_customers(dict_files)
+        upload_product_categories(dict_files)
+        upload_store_types(dict_files)
+        upload_stores(dict_files)
+        upload_transactions(dict_files)
+        log_control.loggerDB.info('Upload of all files successful!')
+
+    except Exception as e:
+        log_control.loggerDB.error(f'General file upload process error, info {e}')
