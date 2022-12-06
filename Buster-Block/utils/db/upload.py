@@ -45,7 +45,7 @@ def upload_csv(file: str, table: str) -> None:
     df.to_sql(table, db.engine, if_exists='append', index=False)
 
 
-def uploat_city(dict_files) -> None:
+def upload_city(dict_files) -> None:
     """
     Load the df cities to the database
 
@@ -58,7 +58,7 @@ def uploat_city(dict_files) -> None:
     upload_csv(file, table)
 
 
-def uploat_customers(dict_files) -> None:
+def upload_customers(dict_files) -> None:
     """
     Load the df customers to the database
 
@@ -71,7 +71,7 @@ def uploat_customers(dict_files) -> None:
     upload_csv(file, table)
 
 
-def uploat_product_categories(dict_files) -> None:
+def upload_product_categories(dict_files) -> None:
     """
     Load the df product_categories to the database
 
@@ -84,7 +84,7 @@ def uploat_product_categories(dict_files) -> None:
     upload_csv(file, table)
 
 
-def uploat_store_types(dict_files) -> None:
+def upload_store_types(dict_files) -> None:
     """
     Load the df store_types to the database
 
@@ -97,7 +97,7 @@ def uploat_store_types(dict_files) -> None:
     upload_csv(file, table)
 
 
-def uploat_stores(dict_files) -> None:
+def upload_stores(dict_files) -> None:
     """
     Load the df stores to the database
 
@@ -110,7 +110,7 @@ def uploat_stores(dict_files) -> None:
     upload_csv(file, table)
 
 
-def uploat_transactions(dict_files) -> None:
+def upload_transactions(dict_files) -> None:
     """
     Load the df transactions to the database
 
@@ -123,7 +123,7 @@ def uploat_transactions(dict_files) -> None:
     upload_csv(file, table)
 
 
-def drop_all_table() -> None:
+def drop_all_tables() -> None:
     """Drops all the tables related to the dataframe"""
 
     models.Transactions.__table__.drop(db.engine)
@@ -142,11 +142,11 @@ def read_upload_csv(dict_files: dict) -> None:
     :type dict_files: dict
     """
 
-    drop_all_table()
+    drop_all_tables()
     create_db()
-    uploat_city(dict_files)
-    uploat_customers(dict_files)
-    uploat_product_categories(dict_files)
-    uploat_store_types(dict_files)
-    uploat_stores(dict_files)
-    uploat_transactions(dict_files)
+    upload_city(dict_files)
+    upload_customers(dict_files)
+    upload_product_categories(dict_files)
+    upload_store_types(dict_files)
+    upload_stores(dict_files)
+    upload_transactions(dict_files)
