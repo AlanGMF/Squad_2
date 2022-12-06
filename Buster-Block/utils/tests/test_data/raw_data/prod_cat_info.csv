@@ -1,0 +1,11 @@
+,prod_cat_code,prod_cat,prod_sub_cat_code,prod_subcat
+0,1,Clothing,4,Mens
+1,1,Clothing,1,Women
+2,1,Clothing,3,Kids
+3,2,Footwear,1,Mens
+4,2,Footwear,3,Women
+5,2,Footwear,4,Kids
+6,3,Electronics,4,Mobiles
+7,3,Electronics,5,Computers
+8,3,Electronics,8,Personal Appliances
+9,3,Electronics,9,Cameras
