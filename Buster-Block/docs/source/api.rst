@@ -3,4 +3,7 @@
 API
 ===
 
+API
+---
+
 .. autofunction:: upload
