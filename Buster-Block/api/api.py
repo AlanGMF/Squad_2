@@ -12,7 +12,7 @@ app = FastAPI()
 DIR = os.path.dirname(os.path.normpath(__file__)).rstrip('/api') +"/utils/etl/process_data"
 
 
-@app.post("/getdata")
+@app.get("/getdata")
 def upload():
     """this endpoint returns all data paths to streamlit
     :return: data paths
