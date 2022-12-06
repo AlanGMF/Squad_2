@@ -9,6 +9,7 @@ path_utils = Path(__file__).parent.parent
 sys.path.append(str(path_utils))
 
 from etl.save import save_csv
+from etl.transform import no_change
 
 
 TEST_DF = pd.DataFrame(
@@ -23,6 +24,16 @@ TEST_PATH = (Path(__file__).parent.parent.joinpath(
                                                 "test_df"
                                                 ))
 
+path_test_csv = Path(__file__).parent.joinpath(
+                                            "test_data"
+                                            ).joinpath(
+                                            "raw_data"
+                                            ).joinpath(
+                                            "prod_cat_info.csv"
+                                            )
+
+path_test_csv = str(path_test_csv)
+
 class Mytest(unittest.TestCase):
 
     def test_save_csv(self):
@@ -32,7 +43,14 @@ class Mytest(unittest.TestCase):
         self.assertTrue(path)
         os.remove(TEST_PATH)
 
+    def test_no_change(self):
+
+        df = no_change(path_test_csv)
+        self.assertTrue(type(df) == pd.DataFrame)
+        print("x")
+
 
 if __name__ == '__main__':
 
     unittest.main()
+    
