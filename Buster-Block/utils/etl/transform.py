@@ -15,22 +15,21 @@ def standardization(dic_root: dict) -> None:
 
     for name in dic_root:
         # Selection of the df to work
-        if name == 'prod_cat_info.csv' or name == 'transactions.csv':
-            if name == 'prod_cat_info.csv':
-                # Adding and saving column
-                 df = df_prod(dic_root[name])
-                 save.save_csv(name, df)
-            else:
-                # Adding and saving column
-                df = df_transactions(dic_root[name])
-                save.save_csv(name, df)
+        if name == 'test_transactions.csv':
+            # Adding and saving column
+            df = df_prod(dic_root[name])
+            save.save_csv(name, df)
+        elif name == 'test_prod_cat_info.csv':
+            # Adding and saving column
+            df = df_transactions(dic_root[name])
+            save.save_csv(name, df)
+        elif name == 'test_customer.csv':
+            df = df_customers(dic_root[name])
+            save.save_csv(name, df)
         else:
-            if name == 'customer.csv':
-                df = df_customers(dic_root[name])
-                save.save_csv(name, df)
-            else:
                 df = no_change(dic_root[name])
-                save.save_csv(name, df)
+                
+        save.save_csv(name, df)
 
 
 def df_prod(file: str) -> pd.DataFrame:
