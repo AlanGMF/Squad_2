@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import date
 import etl.save as save
+import log_control
 
 def standardization(dic_root: dict) -> None:
     """
@@ -13,23 +14,32 @@ def standardization(dic_root: dict) -> None:
     :rtype: None
     """
 
-    for name in dic_root:
-        # Selection of the df to work
-        if name == 'test_transactions.csv':
-            # Adding and saving column
-            df = df_prod(dic_root[name])
-            save.save_csv(name, df)
-        elif name == 'test_prod_cat_info.csv':
-            # Adding and saving column
-            df = df_transactions(dic_root[name])
-            save.save_csv(name, df)
-        elif name == 'test_customer.csv':
-            df = df_customers(dic_root[name])
-            save.save_csv(name, df)
-        else:
+    log_control.loggerETL.info('Started the standardization process')
+    try:
+        for name in dic_root:
+            log_control.loggerETL.info(f'Normalizing the file: {name}')
+            # Selection of the df to work
+            if name == 'test_transactions.csv':
+                # Adding and saving column
+                df = df_prod(dic_root[name])
+                save.save_csv(name, df)
+            elif name == 'test_prod_cat_info.csv':
+                # Adding and saving column
+                df = df_transactions(dic_root[name])
+                save.save_csv(name, df)
+            elif name == 'test_customer.csv':
+                df = df_customers(dic_root[name])
+                save.save_csv(name, df)
+            else:
                 df = no_change(dic_root[name])
-                
-        save.save_csv(name, df)
+
+            log_control.loggerETL.info(f'Successful normalization!')
+
+            # Saving dataframe in CSV
+            save.save_csv(name, df)
+
+    except Exception as e:
+        log_control.loggerETL.error(f'Error in the standardization process, info: {e}')
 
 
 def df_prod(file: str) -> pd.DataFrame:
