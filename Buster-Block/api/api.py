@@ -3,10 +3,16 @@ import uvicorn
 import logging
 from fastapi import FastAPI
 
+# directory
+DIR = os.path.dirname(os.path.normpath(__file__))
+
 # logging config
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(message)s'
-                    )
+logging.config.fileConfig(
+    f'{DIR}/config/api_log.cfg'
+)
+
+# get the logger
+logger = logging.getLogger("api_logger")
 
 app = FastAPI()
 DIR = os.path.dirname(os.path.normpath(__file__)).rstrip('/api') +"/utils/etl/process_data"
@@ -27,7 +33,7 @@ def upload():
     try:
         return data_path
     except Exception:
-        logging.error("Api error", exc_info=True)
+        logger.error("Api error", exc_info=True)
 
 
 # main to run fastapi automatically
