@@ -1,0 +1,9 @@
+pandas
+SQLAlchemy
+fastapi
+uvicorn
+pathlib
+pytest
+coverage
+httpx
+python-dotenv
