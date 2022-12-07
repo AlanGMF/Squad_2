@@ -16,6 +16,7 @@ def main() -> None:
 
     except Exception as e:
         log_control.loggerMain.error(f'Failed to get work path, info: {e}')
+        return e
     
     try:
         log_control.loggerMain.info('Normalization and saving to local CSV file started')
@@ -26,6 +27,7 @@ def main() -> None:
 
     except Exception as e:
         log_control.loggerMain.error(f'Error in data normalization, info: {e}')
+        return e
 
 # Database management
     try:
@@ -35,6 +37,7 @@ def main() -> None:
 
     except Exception as e:
         log_control.loggerMain.error(f'The database could not be created, information:{e}')
+        return e
 
     try:
         log_control.loggerMain.info('Starting to insert data into the database')
@@ -42,8 +45,11 @@ def main() -> None:
         dict_file = upload.root_file()
         upload.read_upload_csv(dict_file)
 
+        log_control.loggerMain.info('Starting data insert successful')
+
     except Exception as e:
         log_control.loggerMain.error(f'Error trying to insert data, information:{e}')
+        return e
 
 if __name__ == '__main__':
     log_control.loggerMain.info('Starting the ETL process')

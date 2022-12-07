@@ -3,7 +3,7 @@ from datetime import date
 import etl.save as save
 import log_control
 
-def standardization(dic_root: dict) -> None:
+def standardization(dic_root: dict) -> None | Exception:
     """
     Calls the necessary functions for loading and saving CSV data 
     with the columns necessary for loading in the db
@@ -40,6 +40,7 @@ def standardization(dic_root: dict) -> None:
 
     except Exception as e:
         log_control.loggerETL.error(f'Error in the standardization process, info: {e}')
+        return e
 
 
 def df_prod(file: str) -> pd.DataFrame:

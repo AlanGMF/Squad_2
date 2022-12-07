@@ -27,3 +27,4 @@ try:
 
 except Exception as e:
     log_control.loggerDB.error(f'Database connection error, info: {e}')
+
