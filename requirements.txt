@@ -7,3 +7,4 @@ pytest
 coverage
 httpx
 python-dotenv
+streamlit
