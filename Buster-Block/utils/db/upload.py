@@ -1,8 +1,8 @@
 import os
 import pandas as pd
-import db.connect as db
-import db.models as models
-import log_control
+import utils.db.connect as db
+import utils.db.models as models
+import utils.log_control as log_control
 
 
 def root_file() -> dict:

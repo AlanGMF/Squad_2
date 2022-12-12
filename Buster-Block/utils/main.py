@@ -1,7 +1,7 @@
-import etl.extraction as extraction
-import etl.transform as transform
-import log_control
-import db.upload as upload
+import utils.etl.extraction as extraction
+import utils.etl.transform as transform
+import utils.log_control as log_control
+import utils.db.upload as upload
 
 def main() -> None:
     """Call needed for the ETL process"""

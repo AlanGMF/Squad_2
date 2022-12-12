@@ -5,6 +5,10 @@ from typing import Optional
 import pandas as pd
 from pydantic import BaseModel
 from fastapi import FastAPI, UploadFile
+import time
+from utils.function import get_csv_files
+#from BusterBlock.utils.main import main
+
 
 # directory
 DIR = os.path.dirname(os.path.normpath(__file__))
@@ -18,7 +22,6 @@ logging.config.fileConfig(
 logger = logging.getLogger("api_logger")
 
 app = FastAPI()
-DIR = os.path.dirname(os.path.normpath(__file__)).rstrip('/api') +"/utils/etl/process_data"
 
 
 @app.get("/getdata")
@@ -27,14 +30,15 @@ def upload():
     :return: data paths
     :rtype: string
     """
+    #start etl
+    #main()
+    #time.sleep(5)
 
     # files paths
-    data_path1 = f"{DIR}/cities.csv, {DIR}/customer.csv, {DIR}/transactions.csv,"
-    data_path2 = f"{DIR}/prod_cat_info.csv, {DIR}/store_types.csv"
-    data_path = data_path1 + data_path2
+    paths_list = get_csv_files()
 
     try:
-        return data_path
+        return paths_list
     except Exception:
         logger.error("Api error", exc_info=True)
 
