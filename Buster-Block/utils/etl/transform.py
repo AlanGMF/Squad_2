@@ -1,9 +1,9 @@
 import pandas as pd
 from datetime import date
-import etl.save as save
-import log_control
+import utils.etl.save as save
+import utils.log_control as log_control
 
-def standardization(dic_root: dict) -> None | Exception:
+def standardization(dic_root: dict) -> None:
     """
     Calls the necessary functions for loading and saving CSV data 
     with the columns necessary for loading in the db
@@ -40,7 +40,6 @@ def standardization(dic_root: dict) -> None | Exception:
 
     except Exception as e:
         log_control.loggerETL.error(f'Error in the standardization process, info: {e}')
-        return e
 
 
 def df_prod(file: str) -> pd.DataFrame:
