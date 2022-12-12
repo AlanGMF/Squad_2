@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-import log_control
+import utils.log_control as log_control
 
 
 def save_csv(name: str, df: pd.DataFrame) -> None:

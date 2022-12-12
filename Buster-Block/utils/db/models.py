@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Integer, Date, Numeric, ForeignKey
 from sqlalchemy.orm import relationship
-import log_control
+import utils.log_control as log_control
 try: 
     from db.connect import Base
 

@@ -1,5 +1,5 @@
 import os
-import log_control
+import utils.log_control as log_control
 
 def root_file()-> dict:
     """Gets the path of the CSV files and their respective name
