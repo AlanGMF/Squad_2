@@ -51,10 +51,3 @@ def fetchTable(cols, table, filters, grouping):
 def addWhitespace(query):
     query += ' '
     return query
-
-
-if __name__ == '__main__':
-    columns = ['COUNT(1)', 'gender']
-    filters = ['gender = ''M''']
-    groupings = ['gender']
-    fetchTable(columns, 'customers', '', groupings)
