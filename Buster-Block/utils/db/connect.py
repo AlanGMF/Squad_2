@@ -9,7 +9,7 @@ log_control.loggerDB.info('Starting database connection')
 try:
     # Load configuration file
     load_dotenv(find_dotenv())
-    USER = os.getenv('USERNAME')
+    USER = os.getenv('USER')
     PASSWORD = os.getenv('PASSWORD')
     HOST = os.getenv('DATABASE_HOST')
     PORT = os.getenv('PORT')
