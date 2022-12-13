@@ -4,11 +4,11 @@ import logging
 from typing import Optional
 import pandas as pd
 from pydantic import BaseModel
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, UploadFile, Form
+from pathlib import Path
 import time
 from utils.function import get_csv_files
 #from BusterBlock.utils.main import main
-
 
 # directory
 DIR = os.path.dirname(os.path.normpath(__file__))
@@ -22,6 +22,11 @@ logging.config.fileConfig(
 logger = logging.getLogger("api_logger")
 
 app = FastAPI()
+
+DIR = os.path.dirname(os.path.normpath(__file__)).rstrip('/api') +"/utils/etl/process_data"
+DIR_UTILS = Path(__file__).parents[1].joinpath("utils")
+DIR_RAW_DATA = DIR_UTILS.joinpath("etl").joinpath("raw_data")
+
 
 
 @app.get("/getdata")
@@ -71,7 +76,7 @@ def get_numeric_columns(df:pd.DataFrame):
     # None is returned if there are
     # no maximums or minimums
     if max.empty or min.empty:
-        print("no hay variables numericas")
+        # log (no numeric columns in df)
         return None
     else:
         # Both results are combined
@@ -91,8 +96,13 @@ async def get_file_info(upload_file: UploadFile):
     :return: data information
     :rtype: DataInsight
     """
+    # Read data and save in raw_data folder
     df = pd.read_csv(upload_file.file)
+    path = DIR_RAW_DATA.joinpath(upload_file.filename)
+    df.to_csv(path)
     upload_file.file.close()
+
+    # Get information
     response= {}
     response["nulls"] = df.isnull().sum().to_dict()
     response["columns"] = df.columns.to_list()
@@ -100,6 +110,81 @@ async def get_file_info(upload_file: UploadFile):
     response["describe"] = df.describe().to_dict()
 
     return response
+
+@app.post("/transform_and_save")
+async def transform_save_data(
+    settings: str = Form(),
+    save_file: bool = Form(),
+    ):
+    """receives a string parameter to apply
+    changes to the dataset in the raw_data
+    folder and returns the resulting dataset.
+
+    :param settings: str(dict), defaults to Form()
+    The form to receive has the following characteristics.
+
+    {
+        "file_name": str
+        "slide_column_n":list[
+                                0:float # min value
+                                1:float # max value
+                                ]
+        "selec_columns":[
+                        "column_1",
+                        "column_2",
+                        "column_n",
+                        ]
+        "nulls_action": "Delete rows" | "Nothing"
+        "sort_column": "name_column"
+        "order": "ASC" | "DESC"
+    }
+
+    :type settings: str, optional
+    :param save_file: determines whether or not
+        to save to the database, defaults to Form()
+    :type save_file: bool, optional
+    :return: dataframe with the changes applied
+    :rtype: dict
+    """
+    # transform str in dict
+    setting: dict
+    setting = eval(settings)
+    path = DIR_RAW_DATA.joinpath(setting["file_name"])
+
+    # get df and filter by columns selected
+    df = pd.read_csv(path).loc[:,setting["selec_columns"]]
+
+    # drop nulls 
+    if setting["selec_columns"] == "Delete rows":
+        df.dropna(inplace=True)
+
+    # sort by order and column
+    order: bool
+    if setting["order"] == "ASC":
+        order = True
+    else:
+        order = False
+
+    df.sort_values(
+                setting["sort_column"],
+                ascending= order,
+                inplace=True
+                )
+    
+    # get numeric columns to filter
+    # apply filter in numeric columns
+
+    for key in setting.keys():
+        if "slide_" in key:
+
+            # Remove the word slider_ from the column name
+            column = key[6:]
+            min = setting[key][0]
+            max = setting[key][1]
+            df = df[df[column].between(min, max)]
+
+    return df.to_dict()
+
 
 # main to run fastapi automatically
 if __name__ == "__main__":

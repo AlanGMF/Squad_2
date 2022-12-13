@@ -1,15 +1,22 @@
 import requests
 import streamlit as st
+import pandas as pd
+import json
 from pages.uils_pages.utils_load_n_modify import show_response
 
 if "get_data_insights" not in st.session_state:
     st.session_state["get_data_insights"] = False
-if "press_button_to_post" not in st.session_state:
-    st.session_state["press_button_to_post"] = False
+if "file_name" not in st.session_state:
+    st.session_state["file_name"] = False
 if "save_base_changes" not in st.session_state:
     st.session_state["save_base_changes"] = False
 if "show_apply_changes" not in st.session_state:
     st.session_state["show_apply_changes"] = False
+if "post_transform" not in st.session_state:
+    st.session_state["post_transform"] = False
+if "Save_data_db" not in st.session_state:
+    st.session_state["Save_data_db"] = False
+
 
 # Show file uploader
 st.markdown("# Buster-block ")
@@ -26,10 +33,10 @@ if uploaded_file:
     go = st.button("Send file to preview", key="send_file")
 
     if go:
-        st.session_state["press_button_to_post"] = True
+        st.session_state["file_name"] = uploaded_file.name
 
         response = requests.post(
-                                'http://127.0.0.1:8000/load_data',
+                                'http://127.0.0.1:8000/info_data',
                                 data={"type": "multipart/form-data"},
                                 files={"upload_file": uploaded_file}
                                 )
@@ -41,6 +48,42 @@ if uploaded_file:
             st.error("Could not connect to server")
         else:
             st.session_state["get_data_insights"] = response
+else:
+    st.session_state["get_data_insights"] = False
 
 if st.session_state["get_data_insights"]:
     show_response(st.session_state["get_data_insights"])
+
+if uploaded_file and st.session_state["post_transform"]:
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+
+    #print("POST A transform_and_save: !")
+
+    settings = str(st.session_state["show_apply_changes"])
+
+    response = dats = requests.post(
+                        url='http://127.0.0.1:8000/transform_and_save',
+                        data={
+                            "settings": settings,
+                            "save_file":st.session_state["Save_data_db"]
+                        }
+                    )
+
+    st.session_state["status_final_response"] = True #response.status_code
+
+    st.markdown("---")
+    st.markdown("#  Data preview:")
+    data = json.loads(response.content.decode('utf-8'))
+    df = pd.DataFrame(data)
+    st.dataframe(df)
+
+    new_name_csv = st.text_input("Name of the new csv file", "my_file")
+    
+    downl = st.download_button(
+                        label="Download data as CSV",
+                        data=df.to_csv().encode('utf-8'),
+                        file_name=f'{new_name_csv}.csv',
+                        mime='text/csv',
+                    )
+    if downl:
+        st.success("Thanks :tada:")

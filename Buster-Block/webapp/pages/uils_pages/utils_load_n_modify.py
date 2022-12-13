@@ -23,7 +23,9 @@ def show_response(response):
     if transf:
 
         # Dict to save the settings to do
-        settings_form = {}
+        settings_form = {
+            "file_name" : st.session_state["file_name"],
+        }
 
         selected_columns = st.multiselect(
                                 "Columns to use",
@@ -129,8 +131,13 @@ def show_response(response):
 
             if st.session_state["show_apply_changes"]:
                 st.markdown("---")
+                
                 save_core_settings = st.button("Apply changes")
-                st.write(st.session_state["show_apply_changes"])
+                save_to_db = st.selectbox(
+                    "Store to database?",
+                    [False,True]
+                )
+                st.session_state["Save_data_db"] = save_to_db
                 if save_core_settings:
                     # print("")
-                    st.write("Done")
+                    st.session_state["post_transform"] = True
