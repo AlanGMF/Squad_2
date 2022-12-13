@@ -1,20 +1,22 @@
+import sys
 from sqlalchemy import Column, String, Integer, Date, Numeric, ForeignKey
 from sqlalchemy.orm import relationship
-import log_control
-try: 
-    from db.connect import Base
+sys.path.append('Buster-Block')
+import utils.log_control as log_control
+import utils.db.connect as connect
 
-except Exception as e:
-    log_control.loggerDB.error('Connection failed!')
 
 try:
-    class Cities(Base):
+    class Cities(connect.Base):
         """Table model cities"""
         __tablename__ = 'cities'
 
         def __init__(self, id_city: int, city: str) -> None:
             self.id_city = id_city
             self.city = city
+
+        def __str__(self) -> None:
+            return f'{self.id_city}, {self.city}'
 
         # Column information
         id_city = Column(Integer, primary_key=True)
@@ -24,10 +26,11 @@ try:
         log_control.loggerDB.info('Model of the successful Customer table!')
 
 except Exception as e:
-    log_control.loggerDB.error('Error in the creation of the cities table modeling')
+    msj = 'Error in the creation of the cities table modeling, info: '
+    log_control.loggerDB.error(f'{msj}{e}')
 
 try:
-    class Customers(Base):
+    class Customers(connect.Base):
         """Customers table model"""
         __tablename__ = 'customers'
 
@@ -55,7 +58,7 @@ except Exception as e:
     log_control.loggerDB.error('Error in the creation of the customers table modeling')
 
 try:
-    class ProductCategories(Base):
+    class ProductCategories(connect.Base):
         """Model of the product_categories table"""
         __tablename__ = 'product_categories'
 
@@ -85,7 +88,7 @@ except Exception as e:
 
 
 try:
-    class StoreTypes(Base):
+    class StoreTypes(connect.Base):
         """Storetype table model"""
         __tablename__ = 'store_types'
 
@@ -107,7 +110,7 @@ except Exception as e:
 
 
 try:
-    class Store(Base):
+    class Store(connect.Base):
         """Table model store"""
         __tablename__ = 'stores'
 
@@ -127,7 +130,7 @@ except Exception as e:
     log_control.loggerDB.error('Error in the creation of the stores table modeling')
 
 try:
-    class Transactions(Base):
+    class Transactions(connect.Base):
         """Transaction Table Model"""
         __tablename__ = 'transactions'
 

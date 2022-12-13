@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-import log_control
+import utils.log_control as log_control
 
 
 def save_csv(name: str, df: pd.DataFrame) -> None:
@@ -26,4 +26,6 @@ def save_csv(name: str, df: pd.DataFrame) -> None:
         log_control.loggerETL.info('Save successful!')
 
     except Exception as e:
-        log_control.loggerETL.error(f'File saving error{e}')
+        msj = 'File saving error '
+        log_control.loggerETL.error(f'{msj}{e}')
+        return msj

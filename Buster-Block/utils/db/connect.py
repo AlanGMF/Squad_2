@@ -3,7 +3,7 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv, find_dotenv
-import log_control
+import utils.log_control as log_control
 
 log_control.loggerDB.info('Starting database connection')
 try:
@@ -26,5 +26,6 @@ try:
     log_control.loggerDB.info('Successful connection!')
 
 except Exception as e:
-    log_control.loggerDB.error(f'Database connection error, info: {e}')
+    msj = 'Database connection error, info: '
+    log_control.loggerDB.error(f'{msj}{e}')
 
