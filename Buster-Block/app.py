@@ -7,4 +7,3 @@ try:
   etl.main()
 except  Exception:
   logger_main.error("database query failed")
-    
