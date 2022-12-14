@@ -8,3 +8,5 @@ coverage
 httpx
 python-dotenv
 streamlit
+psycopg2
+python-multipart
