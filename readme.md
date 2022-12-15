@@ -22,7 +22,7 @@ a plain text file *(.csv)* to a relational database *(PostgreSQL)*
 
 ### Dataset 📚
 ----
-Our initial dataset corresponds to 5 csv format files:
+Our initial dataset corresponds to 6 csv format files:
 1. **cities.csv**: Information of the cities
 2. **customer.csv**: Customer information
 3. **prod_cat_info.csv**: Product information by category
