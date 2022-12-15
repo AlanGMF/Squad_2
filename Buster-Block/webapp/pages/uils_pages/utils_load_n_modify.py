@@ -132,11 +132,11 @@ def show_response(response):
             if st.session_state["show_apply_changes"]:
                 st.markdown("---")
                 
-                save_core_settings = st.button("Apply changes")
                 save_to_db = st.selectbox(
                     "Store to database?",
                     [False,True]
                 )
+                save_core_settings = st.button("Apply changes")
                 st.session_state["Save_data_db"] = save_to_db
                 if save_core_settings:
                     # print("")
