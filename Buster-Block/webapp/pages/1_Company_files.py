@@ -9,8 +9,9 @@ DIR = os.path.dirname(os.path.normpath(__file__)).rstrip('/frontend')
 if "response" not in st.session_state:
     st.session_state["response"] = False
 
-st.markdown("# Store " )
-st.markdown("#### Upload files to transform them! :open_file_folder:" )
+st.markdown("# Buster-block " )
+st.markdown("---" )
+st.markdown("#### Company files :open_file_folder:" )
 
 # NUEVO000
 if st.button('get the data'):

@@ -26,6 +26,7 @@ app = FastAPI()
 DIR = os.path.dirname(os.path.normpath(__file__)).rstrip('/api') +"/utils/etl/process_data"
 DIR_UTILS = Path(__file__).parents[1].joinpath("utils")
 DIR_RAW_DATA = DIR_UTILS.joinpath("etl").joinpath("raw_data")
+DIR_PROCESS_DATA = DIR_UTILS.joinpath("etl").joinpath("processed_data")
 
 
 
@@ -40,7 +41,7 @@ def upload():
     #time.sleep(5)
 
     # files paths
-    paths_list = get_csv_files()
+    paths_list = get_csv_files(DIR_PROCESS_DATA)
 
     try:
         return paths_list
@@ -182,6 +183,20 @@ async def transform_save_data(
             min = setting[key][0]
             max = setting[key][1]
             df = df[df[column].between(min, max)]
+
+    # Save file in db runing the ETL
+    if save_file:
+        #log
+        # Run ETL
+        os.system(str(Path(__file__).parent.parent.joinpath("app.py")))
+    else:
+        # delete file raw_data
+        paths_list = get_csv_files(DIR_RAW_DATA)
+        if setting["file_name"] in paths_list:
+            try:
+                DIR_PROCESS_DATA.joinpath(setting["file_name"]).unlink()
+            except:
+                pass
 
     return df.to_dict()
 
