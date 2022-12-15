@@ -16,11 +16,13 @@ if "post_transform" not in st.session_state:
     st.session_state["post_transform"] = False
 if "Save_data_db" not in st.session_state:
     st.session_state["Save_data_db"] = False
+if "status_final_response" not in st.session_state:
+    st.session_state["status_final_response"] = False
 
 
 # Show file uploader
 st.markdown("# Buster-block ")
-st.markdown("####  Upload your files :open_file_folder:")
+st.markdown("####  Modify your files! :open_file_folder:")
 uploaded_file = st.file_uploader(
                                 " ",
                                 accept_multiple_files=False,
@@ -55,9 +57,8 @@ if st.session_state["get_data_insights"]:
     show_response(st.session_state["get_data_insights"])
 
 if uploaded_file and st.session_state["post_transform"]:
-    headers = {"Content-Type": "application/json; charset=utf-8"}
 
-    #print("POST A transform_and_save: !")
+    #print("")
 
     settings = str(st.session_state["show_apply_changes"])
 
@@ -68,8 +69,16 @@ if uploaded_file and st.session_state["post_transform"]:
                             "save_file":st.session_state["Save_data_db"]
                         }
                     )
+    if response.status_code !=200:
+        st.error("Could not connect to server")
+    else:
+        st.session_state["status_final_response"] = response #response.status_code
+        st.session_state["post_transform"] = False
 
-    st.session_state["status_final_response"] = True #response.status_code
+if st.session_state["status_final_response"] != False:
+
+    st.session_state["post_transform"] = False
+    response = st.session_state["status_final_response"]
 
     st.markdown("---")
     st.markdown("#  Data preview:")
