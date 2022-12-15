@@ -129,7 +129,7 @@ suorce env/bin/activate
 pip install -r requirements.txt
 ```
 ```
-python3 BusterBlock/api/api.py
+python3 Buster-Block/api/api.py
 ```
 ```
 Open new terminal
